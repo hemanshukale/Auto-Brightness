@@ -56,7 +56,7 @@ class Controller(Thread):
         print 'Starting Controller'
         while True :
             try:
-                time.sleep(0.005) # Add delay to avoid takinh too much processing power
+                time.sleep(0.05) # Add delay to avoid takinh too much processing power (default 50ms)
                 if kill :
                     print 'Exiting', ins()
                     os._exit(0)
@@ -78,7 +78,7 @@ class Controller(Thread):
                         avg = offset+1-(float(r+g+b)/float(maxx*3)) # get average of R,G,B
                         avg = constrain(round(((( 1 - filter_weight ) * avg) + ( filter_weight * last_avg)), 3), bmin, bmax) # apply low pass filter,  constrain into set limits and round
                         # print avg
-                        if abs(avg-last_avg) > 0.02 : command(brightness_command + str(avg)) # Excutes command for setting brightness only when diff between current and last frame > 2%
+                        if abs(avg-last_avg) > 0.05 : command(brightness_command + str(avg)) # Excutes command for setting brightness only when diff between current and last frame > 5%
                         last_avg = avg # stores this frame's average
             except :
                 traceback.print_exc()
