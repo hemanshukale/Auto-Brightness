@@ -100,7 +100,7 @@ class Input(Thread):
                 st = raw_input() if not p3 else input() # for raw string input
                 print('st:', st)
                 offset += (float(st.count('+')) - float(st.count('-')))/50 # offset changes proportionally to number of plus / minus found (2% per count)
-                offset = constrain(offset,-1, 1) # constraints offset to limits
+                offset = round(constrain(offset,-1, 1),3) # constraints offset to limits
                 if st.lower() == 'exit' : # exit
                     kill = True
                     print('Exiting', ins())
