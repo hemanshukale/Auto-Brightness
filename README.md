@@ -27,5 +27,6 @@ Python Modules Used : PIL, os, time, traceback, numpy, sys, inspect, mss, thread
 Just run the file AutoBri.py, adjust the offsets if needed and save your eyes!
 
 **PS:**
+Runs on Python 2 and 3.  
 This might have some bugs, Do let me know (hemanshu.kale@gmail.com) in case of any random problems / bugs
 Tested currently only on Ubuntu 18.04LTS, will add cross platform functionalities soon..
