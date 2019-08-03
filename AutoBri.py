@@ -5,21 +5,21 @@ from mss import mss
 from threading import Thread
 from gi.repository import Gdk
 import argparse
-
+p3 = sys.version_info > (2,8)
 def ins():
-    return inspect.getframeinfo(inspect.stack()[1][0]).lineno # For debugging, print line number which called this function
+    return inspect.getframeinfo(inspect.stack()[1][0]).lineno # For debugging, prints line number which called this function
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-nl", "--nolowpass", action="store_true", help='Disable Low pass filter' )
 
 cmd_args  = parser.parse_args()
-print ins(), cmd_args
+print(ins(), cmd_args)
 if cmd_args.nolowpass :
     filter_weight = 0
-    print 'Low pass filter disabled'
+    print('Low pass filter disabled')
 else :
     filter_weight = 0.5 # weightage for low pass filter
-    print 'Low pass filter on'
+    print('Low pass filter on')
 
 bmin,bmax,offset = 0.02, 1, 0 # Min, Max limits, offsets for brightness in fraction(%)
 
@@ -53,12 +53,12 @@ class Controller(Thread):
 
     def run(self):
         global bmin,bmax,offset,kill,maxx,last_avg,filter_weight
-        print 'Starting Controller'
+        print('Starting Controller')
         while True :
             try:
-                time.sleep(0.05) # Add delay to avoid takinh too much processing power (default 50ms)
+                time.sleep(0.05) # Add delay to avoid takinh too much processing power (default 50ms )
                 if kill :
-                    print 'Exiting', ins()
+                    print('Exiting', ins())
                     os._exit(0)
                 # t1 = time.time()
                 with mss() as sct:
@@ -74,11 +74,11 @@ class Controller(Thread):
                         r = summ[0]/xy
                         g = summ[1]/xy
                         b = summ[2]/xy
-                        # print r,g,b
+                        # print(r,g,b
                         avg = offset+1-(float(r+g+b)/float(maxx*3)) # get average of R,G,B
                         avg = constrain(round(((( 1 - filter_weight ) * avg) + ( filter_weight * last_avg)), 3), bmin, bmax) # apply low pass filter,  constrain into set limits and round
-                        # print avg
-                        if abs(avg-last_avg) > 0.05 : command(brightness_command + str(avg)) # Excutes command for setting brightness only when diff between current and last frame > 5%
+                        # print(avg
+                        if abs(avg-last_avg) > 0.04 : command(brightness_command + str(avg)) # Excutes command for setting brightness only when diff between current and last frame > 2%
                         last_avg = avg # stores this frame's average
             except :
                 traceback.print_exc()
@@ -89,23 +89,23 @@ class Input(Thread):
         Thread.__init__(self)
 
     def run(self):
-        global offset, kill
-        print 'Ready for input'
+        global offset, kill, p3
+        print('Ready for input')
         while True:
             try:
                 if kill:
-                    print "Exiting", ins()
+                    print("Exiting", ins())
                     os._exit(0)
                 st = ''
-                st = raw_input() # for raw string input
-                print 'st:', st
+                st = raw_input() if not p3 else input() # for raw string input
+                print('st:', st)
                 offset += (float(st.count('+')) - float(st.count('-')))/50 # offset changes proportionally to number of plus / minus found (2% per count)
                 offset = constrain(offset,-1, 1) # constraints offset to limits
                 if st.lower() == 'exit' : # exit
                     kill = True
-                    print 'Exiting', ins()
+                    print('Exiting', ins())
                     os._exit(0)
-                print 'Curr offset ' , offset
+                print('Curr offset ' , offset)
             except :
                 traceback.print_exc()
 
@@ -118,13 +118,13 @@ try :
 except :
     traceback.print_exc()
 
-print 'here'
+print('here')
 while True:
     try :
         time.sleep(1)
     except KeyboardInterrupt as e:
         kill = True
-        print "Exiting", ins()
+        print("Exiting", ins())
         os._exit(0)
     except :
         traceback.print_exc()
