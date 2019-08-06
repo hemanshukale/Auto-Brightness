@@ -1,7 +1,7 @@
 # Auto-Brightness
 Screen Brightness adjusts automatically per screen content 
 
-If you all develop in dark mode like me but need to switch to webpages constantly (which sadly are still in the OHH MY EYES!!! mode) you might need to constantly change brightness whenever you change windows... This script is just for that, it averages up the pixel values over the screen and adjusts the brightness (inversely) proportional to it.  
+If you all develop in dark mode like me but need to switch to webpages constantly (which sadly are still in the **OHH MY EYES!!!** mode) you might need to constantly change brightness whenever you change windows... This script is just for that, it averages up the pixel values over the screen and adjusts the brightness (inversely) proportional to it.  
 
 Currently the R, G and Bs are computed separately so as to keep an option of having individual sensitivities / offsets in later commits. 
 
